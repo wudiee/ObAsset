@@ -28,6 +28,8 @@
 
 <body id="page-top">
 
+	
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -102,7 +104,6 @@
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
                             </a>
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
@@ -128,7 +129,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <div><span class="mr-2 d-none d-lg-inline text-gray-600 small">${loginOK} 님 반갑습니다.</span></div>
                                 <img class="img-profile rounded-circle"
                                     src="img/ibk.png">
                             </a>
@@ -219,10 +220,9 @@
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-                                    <h6 class="m-0 font-weight-bold text-primary">
-									20대 포트폴리오 비율</h6>
-                                    
+                                    <h6 class="m-0 font-weight-bold text-primary"> ${age}대 포트폴리오 비율</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -230,52 +230,52 @@
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                             aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="#">20대</a>
-                                            <a class="dropdown-item" href="#">30대</a>
-                                            <a class="dropdown-item" href="#">40대</a>
-                                            <a class="dropdown-item" href="#">50대</a>
-                                            <a class="dropdown-item" href="#">60대 이상</a>
+                                            <a class="dropdown-item" href="${contextPath}/updateAge?age=10">10대</a>
+                                            <a class="dropdown-item" href="${contextPath}/updateAge?age=20">20대</a>
+                                            <a class="dropdown-item" href="${contextPath}/updateAge?age=30">30대</a>
+                                            <a class="dropdown-item" href="${contextPath}/updateAge?age=40">40대</a>
+                                            <a class="dropdown-item" href="${contextPath}/updateAge?age=50">50대 이상</a>
                                         </div>
                                     </div>
                                     
                                 </div>
                                 <div class="card-body">
                                     <h4 class="small font-weight-bold">주식 <span
-                                            class="float-right">20%</span></h4>
+                                            class="float-right">${barData.stock}%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-secondary" role="progressbar" style="width: 20%"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-secondary" role="progressbar" style="width: ${barData.stock}%"
+                                            aria-valuenow="${barData.stock}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">예적금<span
-                                            class="float-right">40%</span></h4>
+                                            class="float-right">${barData.deposit}%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: ${barData.deposit}%"
+                                            aria-valuenow="${barData.deposit}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">부동산<span
-                                            class="float-right">60%</span></h4>
+                                            class="float-right">${barData.house}%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 60%"
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: ${barData.house}%"
+                                            aria-valuenow="${barData.house}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">펀드<span
-                                            class="float-right">80%</span></h4>
+                                            class="float-right">${barData.fund}%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: ${barData.fund}%"
+                                            aria-valuenow="${barData.fund}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">채권 <span
-                                            class="float-right">Complete!</span></h4>
+                                            class="float-right">${barData.bond}%</span></h4>
                                     <div class="progress">
-                                        <div class="progress-bar bg-dark" role="progressbar" style="width: 100%"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-dark" role="progressbar" style="width: ${barData.bond}%"
+                                            aria-valuenow="${barData.bond}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <br>
                                     <h4 class="small font-weight-bold">금<span
-                                            class="float-right">Complete!</span></h4>
+                                            class="float-right">${barData.gold}%</span></h4>
                                     <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 100%"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: ${barData.gold}%"
+                                            aria-valuenow="${barData.gold}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
@@ -288,12 +288,12 @@
                         </div> -->
                     </div>
 
-				<!-- 3개원 테스트 -->
-				<!-- Pie Chart -->
-				    <!-- Content Row -->
+            <!-- 3개원 테스트 -->
+            <!-- Pie Chart -->
+                <!-- Content Row -->
                     <div class="row">
-				        <!-- Content Column -->
-				
+                    <!-- Content Column -->
+            
                         <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4">
                             
@@ -473,9 +473,266 @@
     <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+<!-- <script src="js/demo/chart-area-demo.js"></script>-->    
+<!-- <script src="js/demo/chart-pie-demo.js"></script>-->
+   
+   <script language=javascript>
+   <!-- 내자산 추이 -->
+	Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+	Chart.defaults.global.defaultFontColor = '#858796';
 
+	function number_format(number, decimals, dec_point, thousands_sep) {
+	  // *     example: number_format(1234.56, 2, ',', ' ');
+	  // *     return: '1 234,56'
+	  number = (number + '').replace(',', '').replace(' ', '');
+	  var n = !isFinite(+number) ? 0 : +number,
+	    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+	    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+	    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+	    s = '',
+	    toFixedFix = function(n, prec) {
+	      var k = Math.pow(10, prec);
+	      return '' + Math.round(n * k) / k;
+	    };
+	  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+	  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+	  if (s[0].length > 3) {
+	    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+	  }
+	  if ((s[1] || '').length < prec) {
+	    s[1] = s[1] || '';
+	    s[1] += new Array(prec - s[1].length + 1).join('0');
+	  }
+	  return s.join(dec);
+	}
+
+	// Area Chart Example
+	var ctx = document.getElementById("myAreaChart");
+	var myLineChart = new Chart(ctx, {
+	  type: 'line',
+	  data: {
+	    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+	    datasets: [{
+	      label: "Asset",
+	      lineTension: 0.3,
+	      backgroundColor: "rgba(78, 115, 223, 0.05)",
+	      borderColor: "rgba(78, 115, 223, 1)",
+	      pointRadius: 3,
+	      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+	      pointBorderColor: "rgba(78, 115, 223, 1)",
+	      pointHoverRadius: 3,
+	      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+	      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+	      pointHitRadius: 10,
+	      pointBorderWidth: 2,
+	      data: [${month.get(0)},${month.get(1)},${month.get(2)},${month.get(3)},${month.get(4)},${month.get(5)},
+	    	    ${month.get(6)},${month.get(7)},${month.get(8)},${month.get(9)},${month.get(10)},${month.get(11)}],
+	    }],
+	  },
+	  options: {
+	    maintainAspectRatio: false,
+	    layout: {
+	      padding: {
+	        left: 10,
+	        right: 25,
+	        top: 25,
+	        bottom: 0
+	      }
+	    },
+	    scales: {
+	      xAxes: [{
+	        time: {
+	          unit: 'date'
+	        },
+	        gridLines: {
+	          display: false,
+	          drawBorder: false
+	        },
+	        ticks: {
+	          maxTicksLimit: 7
+	        }
+	      }],
+	      yAxes: [{
+	        ticks: {
+	          maxTicksLimit: 5,
+	          padding: 10,
+	          // Include a dollar sign in the ticks
+	          callback: function(value, index, values) {
+	            return '$' + number_format(value);
+	          }
+	        },
+	        gridLines: {
+	          color: "rgb(234, 236, 244)",
+	          zeroLineColor: "rgb(234, 236, 244)",
+	          drawBorder: false,
+	          borderDash: [2],
+	          zeroLineBorderDash: [2]
+	        }
+	      }],
+	    },
+	    legend: {
+	      display: false
+	    },
+	    tooltips: {
+	      backgroundColor: "rgb(255,255,255)",
+	      bodyFontColor: "#858796",
+	      titleMarginBottom: 10,
+	      titleFontColor: '#6e707e',
+	      titleFontSize: 14,
+	      borderColor: '#dddfeb',
+	      borderWidth: 1,
+	      xPadding: 15,
+	      yPadding: 15,
+	      displayColors: false,
+	      intersect: false,
+	      mode: 'index',
+	      caretPadding: 10,
+	      callbacks: {
+	        label: function(tooltipItem, chart) {
+	          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+	          return datasetLabel + ': ￦' + number_format(tooltipItem.yLabel) + '만원';
+	        }
+	      }
+	    }
+	  }
+	});
+	
+	<!-- 내 포트폴리오 그래프 -->
+	Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+	Chart.defaults.global.defaultFontColor = '#858796';
+
+	// Pie Chart Example
+	var ctx = document.getElementById("myPieChart");
+	var myPieChart = new Chart(ctx, {
+	  type: 'doughnut',
+	  data: {
+	    labels: ["주식", "예적금", "부동산", "펀드", "채권", "금"],
+	    
+	    datasets: [{
+	      data: [${myPortfolio.stock}*100,${myPortfolio.deposit}*100,${myPortfolio.house}*100,${myPortfolio.fund}*100,${myPortfolio.bond}*100,${myPortfolio.gold}*100],
+	      backgroundColor: ['#858796', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
+	      hoverBackgroundColor: ['#60616f', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
+	      hoverBorderColor: "rgba(234, 236, 244, 1)",
+	    }],
+	  },
+	  options: {
+	    maintainAspectRatio: false,
+	    tooltips: {
+	      backgroundColor: "rgb(255,255,255)",
+	      bodyFontColor: "#858796",
+	      borderColor: '#dddfeb',
+	      borderWidth: 1,
+	      xPadding: 15,
+	      yPadding: 15,
+	      displayColors: false,
+	      caretPadding: 10,
+	    },
+	    legend: {
+	      display: false
+	    },
+	    cutoutPercentage: 80,
+	  },
+	});
+	
+	<!-- 공격형 -->
+	var ctx1 = document.getElementById("myPieChart1");
+	var myPieChart1 = new Chart(ctx1, {
+		  type: 'doughnut',
+		  data: {
+		    labels: ["주식", "예적금", "부동산", "펀드", "채권", "금"],
+		    
+		    datasets: [{
+			  data: [${riskyPortfolio.stock}*100,${riskyPortfolio.deposit}*100,${riskyPortfolio.house}*100,${riskyPortfolio.fund}*100,${riskyPortfolio.bond}*100,${riskyPortfolio.gold}*100],
+		      backgroundColor: ['#858796', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
+		      hoverBackgroundColor: ['#60616f', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
+		      hoverBorderColor: "rgba(234, 236, 244, 1)",
+		    }],
+		  },
+		  options: {
+		    maintainAspectRatio: false,
+		    tooltips: {
+		      backgroundColor: "rgb(255,255,255)",
+		      bodyFontColor: "#858796",
+		      borderColor: '#dddfeb',
+		      borderWidth: 1,
+		      xPadding: 15,
+		      yPadding: 15,
+		      displayColors: false,
+		      caretPadding: 10,
+		    },
+		    legend: {
+		      display: false
+		    },
+		    cutoutPercentage: 80,
+		  },
+		});
+
+	<!-- 평균형 -->
+	var ctx2 = document.getElementById("myPieChart2");
+	var myPieChart2 = new Chart(ctx2, {
+		  type: 'doughnut',
+		  data: {
+		    labels: ["주식", "예적금", "부동산", "펀드", "채권", "금"],
+		    
+		    datasets: [{
+			  data: [${averagePortfolio.stock}*100,${averagePortfolio.deposit}*100,${averagePortfolio.house}*100,${averagePortfolio.fund}*100,${averagePortfolio.bond}*100,${averagePortfolio.gold}*100],
+		      backgroundColor: ['#858796', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
+		      hoverBackgroundColor: ['#60616f', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
+		      hoverBorderColor: "rgba(234, 236, 244, 1)",
+		    }],
+		  },
+		  options: {
+		    maintainAspectRatio: false,
+		    tooltips: {
+		      backgroundColor: "rgb(255,255,255)",
+		      bodyFontColor: "#858796",
+		      borderColor: '#dddfeb',
+		      borderWidth: 1,
+		      xPadding: 15,
+		      yPadding: 15,
+		      displayColors: false,
+		      caretPadding: 10,
+		    },
+		    legend: {
+		      display: false
+		    },
+		    cutoutPercentage: 80,
+		  },
+		});
+
+	<!-- 안전형 -->
+	var ctx3 = document.getElementById("myPieChart3");
+	var myPieChart3 = new Chart(ctx3, {
+		  type: 'doughnut',
+		  data: {
+		    labels: ["주식", "예적금", "부동산", "펀드", "채권", "금"],
+		    
+		    datasets: [{
+			  data: [${safetyPortfolio.stock}*100,${safetyPortfolio.deposit}*100,${safetyPortfolio.house}*100,${safetyPortfolio.fund}*100,${safetyPortfolio.bond}*100,${safetyPortfolio.gold}*100],
+		      backgroundColor: ['#858796', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
+		      hoverBackgroundColor: ['#60616f', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
+		      hoverBorderColor: "rgba(234, 236, 244, 1)",
+		    }],
+		  },
+		  options: {
+		    maintainAspectRatio: false,
+		    tooltips: {
+		      backgroundColor: "rgb(255,255,255)",
+		      bodyFontColor: "#858796",
+		      borderColor: '#dddfeb',
+		      borderWidth: 1,
+		      xPadding: 15,
+		      yPadding: 15,
+		      displayColors: false,
+		      caretPadding: 10,
+		    },
+		    legend: {
+		      display: false
+		    },
+		    cutoutPercentage: 80,
+		  },
+		});
+	</script>
 </body>
 
 </html>

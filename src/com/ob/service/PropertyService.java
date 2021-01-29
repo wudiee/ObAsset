@@ -1,5 +1,6 @@
 package com.ob.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,46 @@ public class PropertyService {
 		  return true;
 		  } else return false;
 	}
+	
+		public List<Integer> getMonthlyProperty(String id, String year){
+		System.out.println(id);
+		System.out.println(year);
+		
+		List<Integer> totalProperty = new ArrayList<Integer>();
+		
+		for(int i=1;i<=12;i++) {
+			
+			if(i<10) {
+				
+				Property property = new Property();
+				property.setId(id);
+				property.setRegdate(year+"0"+String.valueOf(i));
+
+				String total = propertydao.getColumnProperty(property);
+				
+				if(total!=null)
+					totalProperty.add(Integer.valueOf(total));
+				else
+					totalProperty.add(0);
+			}
+			else {
+				Property property = new Property();
+				property.setId(id);
+				property.setRegdate(year+String.valueOf(i));
+
+				String total = propertydao.getColumnProperty(property);
+				
+				if(total!=null)
+					totalProperty.add(Integer.valueOf(total));
+				else
+					totalProperty.add(0);
+			
+			}
+		}
+		
+		return totalProperty;
+	}
+	
 }
 
 

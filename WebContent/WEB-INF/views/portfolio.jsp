@@ -52,8 +52,6 @@
                 <br>Information
             </div>
 
-           
-
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="/ObAsset/portfolio">
@@ -82,7 +80,6 @@
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
         </ul>
 
         <!-- Content Wrapper -->
@@ -122,13 +119,11 @@
                             </div>
                         </li>
 
-               
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                    <div><span class="mr-2 d-none d-lg-inline text-gray-600 small">${loginOK} 님 반갑습니다.</span></div>
                                 <img class="img-profile rounded-circle"
                                     src="img/ibk.png">
                             </a>
@@ -156,7 +151,8 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">자산을 입력해주세요.</h1>
                                     </div>
-                                    <form class="user" action="index" method="get">
+                                    <form class="user" action="addProperty" method="post">
+                                    <input type="hidden" name="id" value = "${loginOK}">
                                     
                                         <div class="form-group">
                                          <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
@@ -165,32 +161,34 @@
                                                 placeholder="주식" > 
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" name="deposit" class="form-control form-control-user"
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                            name="deposit" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="예적금">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" name="house" class="form-control form-control-user"
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                            name="house" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="부동산">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" name="fund" class="form-control form-control-user"
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                            name="fund" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="펀드">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" name="bond" class="form-control form-control-user"
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                            name="bond" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="채권">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  name="gold" class="form-control form-control-user"
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  
+                                            name="gold" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="금">
                                         </div>
                                         <div class="form-group">
-                                            <input type="date" name="date" class="form-control form-control-user"
+                                            <input type="date" name="regdate" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="입력날짜">
                                         </div>
-                                        
-                                        
-                                        
                                         
                                        <input type="submit" class="btn btn-primary btn-user btn-block" value="입력하기">
 
@@ -198,13 +196,7 @@
                                 </div>
                             </div>
                         </div>  
-                    
-                    
-
-
-                    
                 </div>
-                <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
@@ -217,13 +209,8 @@
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
-
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
