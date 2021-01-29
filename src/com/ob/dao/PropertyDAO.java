@@ -12,5 +12,6 @@ public interface PropertyDAO {
 	 public Property getProperty(Property property);
 	 public int addProperty(Property property);
 	 public int updateProperty(Property property);
+	 public String getColumnProperty(Property property);
 	
 }

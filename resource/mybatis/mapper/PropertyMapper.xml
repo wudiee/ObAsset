@@ -15,6 +15,11 @@
 		update property set stock = #{stock}, deposit = #{deposit}, house = #{house}, fund = #{fund},  bond = #{bond},  gold = #{gold} where id=#{id} and regdate = #{regdate} 
 	</update>
 	
+	<!-- 모든 자산 컬럼 합 -->
+	<select id="getColumnProperty" resultType="String" parameterType="com.ob.dto.Property">
+		select to_char(sum(stock+deposit+house+fund+gold+bond)) from property where id = #{id} and regdate = #{regdate}
+	</select>
+	
 </mapper>
 
 

@@ -38,14 +38,27 @@ public class UserService {
 	
 	//로그인
 	public boolean signIn(User user) {
-		boolean login = false;
-		String id = user.getId();
-		String password = user.getPassword();
-		if(id.equals(userDao.getUser(id).getId()) && password.equals(userDao.getUser(id).getPassword())){
-			login = true;
-		}
+	      boolean login = false;
+	      String id = user.getId();
+	      String password = user.getPassword();
+	      if(id.equals("")||password.equals("")) {
+	         return false;
+	      } else {
+	         if(userDao.getUser(id) == null) {
+	            return false;
+	         } else if(id.equals(userDao.getUser(id).getId()) && password.equals(userDao.getUser(id).getPassword())){
+	            login = true;
+	         }
+	      }
+	      
+	      return login;
+	   }
+	
+	public User getUser(String id) {
 		
-		return login;
+		return userDao.getUser(id);
 	}
+
+	
 }
 

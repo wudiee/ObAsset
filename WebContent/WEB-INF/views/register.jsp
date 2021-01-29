@@ -35,15 +35,15 @@
                 <!-- Nested Row within Card Body -->
                 <div class="row">
                 <!-- <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> -->                   
- 					 <div><img src ="img/logo.png"/></div>
- 					 
+                 <div><img src ="img/logo.png"/></div>
+                 
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
                             
-                            <form class="user" action="login" method="post">
+                            <form class="user" action="userRegister" method="post">
                                
                                 <div class="form-group">
                                     <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName"
@@ -70,49 +70,49 @@
                                * 연령대를 선택해주세요 <br>
                                 
                                 <div class="custom-control custom-radio">
-									<input type="radio" name="age" id="age-10" value="10" class="custom-control-input">
-									<label class="custom-control-label" for="age-10">10대</label>
-								</div>	
-								<div class="custom-control custom-radio">
-									<input type="radio" name="age" id="age-20" value="20" class="custom-control-input">
-									<label class="custom-control-label" for="age-20">20대</label>
-								</div>
-								<div class="custom-control custom-radio">
-									<input type="radio" name="age" id="age-30" value="30" class="custom-control-input">
-									<label class="custom-control-label" for="age-30">30대</label>
-								</div>
-								<div class="custom-control custom-radio">
-									<input type="radio" name="age" id="age-40" value="40" class="custom-control-input">
-									<label class="custom-control-label" for="age-40">40대</label>
-								</div>
-								<div class="custom-control custom-radio">
-									<input type="radio" name="age" id="age-50" value="50" class="custom-control-input">
-									<label class="custom-control-label" for="age-50">50대</label>
-								</div>
-								<br>
+                           <input type="radio" name="generation" id="age-10" value="10" class="custom-control-input">
+                           <label class="custom-control-label" for="age-10">10대</label>
+                        </div>   
+                        <div class="custom-control custom-radio">
+                           <input type="radio" name="generation" id="age-20" value="20" class="custom-control-input">
+                           <label class="custom-control-label" for="age-20">20대</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                           <input type="radio" name="generation" id="age-30" value="30" class="custom-control-input">
+                           <label class="custom-control-label" for="age-30">30대</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                           <input type="radio" name="generation" id="age-40" value="40" class="custom-control-input">
+                           <label class="custom-control-label" for="age-40">40대</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                           <input type="radio" name="generation" id="age-50" value="50" class="custom-control-input">
+                           <label class="custom-control-label" for="age-50">50대</label>
+                        </div>
+                        <br>
                                
                                 <!-- 은행 선택 -->
                                 * 주거래 은행을 선택해주세요 
                                 <div class="custom-control custom-radio">
-									<input type="radio" name="bank" id="bank-nh" value="nh" class="custom-control-input">
-									<label class="custom-control-label" for="bank-nh">농협</label>
-								</div>
+                           <input type="radio" name="bank" id="bank-nh" value="nh" class="custom-control-input">
+                           <label class="custom-control-label" for="bank-nh">농협</label>
+                        </div>
                                 <div class="custom-control custom-radio">
-									<input type="radio" name="bank" id="bank-sh" value="sh" class="custom-control-input">
-									<label class="custom-control-label" for="bank-sh">신한</label>
-								</div>
+                           <input type="radio" name="bank" id="bank-sh" value="sh" class="custom-control-input">
+                           <label class="custom-control-label" for="bank-sh">신한</label>
+                        </div>
                                 <div class="custom-control custom-radio">
-									<input type="radio" name="bank" id="bank-ibk" value="ibk" class="custom-control-input">
-									<label class="custom-control-label" for="bank-ibk">IBK</label>
-								</div>
+                           <input type="radio" name="bank" id="bank-ibk" value="ibk" class="custom-control-input">
+                           <label class="custom-control-label" for="bank-ibk">IBK</label>
+                        </div>
                                 <div class="custom-control custom-radio">
-									<input type="radio" name="bank" id="bank-kb" value="kb" class="custom-control-input">
-									<label class="custom-control-label" for="bank-kb">국민</label>
-								</div>
+                           <input type="radio" name="bank" id="bank-kb" value="kb" class="custom-control-input">
+                           <label class="custom-control-label" for="bank-kb">국민</label>
+                        </div>
                                 <div class="custom-control custom-radio">
-									<input type="radio" name="bank" id="bank-wr" value="wr" class="custom-control-input">
-									<label class="custom-control-label" for="bank-wr">우리</label>
-								</div>
+                           <input type="radio" name="bank" id="bank-wr" value="wr" class="custom-control-input">
+                           <label class="custom-control-label" for="bank-wr">우리</label>
+                        </div>
                                <br>
                                 
                                 <input type="submit" class="btn btn-primary btn-user btn-block" value="회원가입">

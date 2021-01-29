@@ -14,4 +14,5 @@
 		insert into users(id, password, name, generation, bank) values (#{id},#{password},#{name},#{generation},#{bank})
 	</insert>
 	
+	
 </mapper>
