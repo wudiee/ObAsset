@@ -35,11 +35,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/ObAsset/index">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <img src="img/logo.png">
                 </div>
-                <div class="sidebar-brand-text mx-3">ObAsset</div>
+                <div class="sidebar-brand-text mx-1">ObAsset</div>
             </a>
 
             <!-- Divider -->
@@ -53,25 +53,27 @@
             </div>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="/ObAsset/portfolio">
-                    <i class="fas fa-fw fa-chart-area"></i>
                     <span>Portfolio Management</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
+                <a class="nav-link" href="/ObAsset/board">
+                    <span>Board</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
                 <a class="nav-link" href="/ObAsset/news">
-                    <i class="fas fa-fw fa-table"></i>
                     <span>Financial Video</span></a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
-            
               <li class="nav-item">
                 <a class="nav-link collapsed" href="/ObAsset/logout">
-                    <i class="fas fa-fw fa-wrench"></i>
                     <span>Logout</span>
                 </a>
             </li>
@@ -124,8 +126,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <div><span class="mr-2 d-none d-lg-inline text-gray-600 small">${loginOK} 님 반갑습니다.</span></div>
-                                <img class="img-profile rounded-circle"
-                                    src="img/ibk.png">
+                                <img class="img-profile rounded-circle" src="${bank}">
                             </a>
                             
                             <!-- Dropdown - User Information -->
@@ -144,12 +145,13 @@
                 <div class="container-fluid">
 
                     <!-- Nested Row within Card Body -->
-                        <div class="row" >
+                        <div class="row d-flex justify-content-center align-items-center h-100">
 
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">자산을 입력해주세요.</h1>
+                                        <h1 class="h3 text-gray-900 mb-4"><b>자산 입력</b></h1>
+                                        <h1 class="h6 text-gray-900 mb-4">(단위: 만원)</h1>
                                     </div>
                                     <form class="user" action="addProperty" method="post">
                                     <input type="hidden" name="id" value = "${loginOK}">
@@ -157,40 +159,41 @@
                                         <div class="form-group">
                                          <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
                                           name="stock" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                                id="stock" aria-describedby="emailHelp"
                                                 placeholder="주식" > 
                                         </div>
                                         <div class="form-group">
                                             <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
                                             name="deposit" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="예적금">
+                                                id="deposit" placeholder="예적금">
                                         </div>
                                         <div class="form-group">
                                             <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
                                             name="house" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="부동산">
+                                                id="house" placeholder="부동산">
                                         </div>
                                         <div class="form-group">
                                             <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
                                             name="fund" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="펀드">
+                                                id="fund" placeholder="펀드">
                                         </div>
                                         <div class="form-group">
                                             <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
                                             name="bond" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="채권">
+                                                id="bond" placeholder="채권">
                                         </div>
                                         <div class="form-group">
                                             <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  
                                             name="gold" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="금">
+                                                id="gold" placeholder="금">
                                         </div>
                                         <div class="form-group">
                                             <input type="date" name="regdate" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="입력날짜">
+                                                id="regdate" placeholder="입력날짜">
                                         </div>
                                         
-                                       <input type="submit" class="btn btn-primary btn-user btn-block" value="입력하기">
+                                       <input type="submit" class="btn btn-primary btn-user btn-block" 
+                                       		  id="submit" value="입력하기" disabled="">
 
                                     </form>
                                 </div>
@@ -246,6 +249,171 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    
+    <!-- 유효성 체크 -->
+	<script>
+    // 전체 자산 입력시 입력 허용
+	$("#stock").blur(function() {
+		var stock = $('#stock').val();
+		var deposit = $('#deposit').val();
+		var house = $('#house').val();
+		var fund = $('#fund').val();
+		var bond = $('#bond').val();
+		var gold = $('#gold').val();
+		var regdate = $('#regdate').val();
+		
+		if(stock != ""){
+			
+			if(deposit != "" && house != "" && fund != "" && bond != "" && gold != "" && regdate != ""){
+				$("#submit").attr("disabled", false);
+			}
+			
+		} else {
+			
+			$("#submit").attr("disabled", true);				
+			
+		} 
+		
+	});
+    // 전체 자산 입력시 입력 허용
+	$("#deposit").blur(function() {
+		var stock = $('#stock').val();
+		var deposit = $('#deposit').val();
+		var house = $('#house').val();
+		var fund = $('#fund').val();
+		var bond = $('#bond').val();
+		var gold = $('#gold').val();
+		var regdate = $('#regdate').val();
+		
+		if(deposit != ""){
+			
+			if(stock != "" && house != "" && fund != "" && bond != "" && gold != "" && regdate != ""){
+				$("#submit").attr("disabled", false);
+			}
+			
+		} else {
+			
+			$("#submit").attr("disabled", true);				
+			
+		} 
+		
+	});
+    // 전체 자산 입력시 입력 허용
+	$("#house").blur(function() {
+		var stock = $('#stock').val();
+		var deposit = $('#deposit').val();
+		var house = $('#house').val();
+		var fund = $('#fund').val();
+		var bond = $('#bond').val();
+		var gold = $('#gold').val();
+		var regdate = $('#regdate').val();
+		
+		if(house != ""){
+			
+			if(deposit != "" && stock != "" && fund != "" && bond != "" && gold != "" && regdate != ""){
+				$("#submit").attr("disabled", false);
+			}
+			
+		} else {
+			
+			$("#submit").attr("disabled", true);				
+			
+		} 
+		
+	});
+    // 전체 자산 입력시 입력 허용
+	$("#fund").blur(function() {
+		var stock = $('#stock').val();
+		var deposit = $('#deposit').val();
+		var house = $('#house').val();
+		var fund = $('#fund').val();
+		var bond = $('#bond').val();
+		var gold = $('#gold').val();
+		var regdate = $('#regdate').val();
+		
+		if(fund != ""){
+			
+			if(deposit != "" && house != "" && stock != "" && bond != "" && gold != "" && regdate != ""){
+				$("#submit").attr("disabled", false);
+			}
+			
+		} else {
+			
+			$("#submit").attr("disabled", true);				
+			
+		} 
+		
+	});
+    // 전체 자산 입력시 입력 허용
+	$("#bond").blur(function() {
+		var stock = $('#stock').val();
+		var deposit = $('#deposit').val();
+		var house = $('#house').val();
+		var fund = $('#fund').val();
+		var bond = $('#bond').val();
+		var gold = $('#gold').val();
+		var regdate = $('#regdate').val();
+		
+		if(bond != ""){
+			
+			if(deposit != "" && house != "" && fund != "" && stock != "" && gold != "" && regdate != ""){
+				$("#submit").attr("disabled", false);
+			}
+			
+		} else {
+			
+			$("#submit").attr("disabled", true);				
+			
+		} 
+		
+	});
+    // 전체 자산 입력시 입력 허용
+	$("#gold").blur(function() {
+		var stock = $('#stock').val();
+		var deposit = $('#deposit').val();
+		var house = $('#house').val();
+		var fund = $('#fund').val();
+		var bond = $('#bond').val();
+		var gold = $('#gold').val();
+		var regdate = $('#regdate').val();
+		
+		if(gold != ""){
+			
+			if(deposit != "" && house != "" && fund != "" && bond != "" && stock != "" && regdate != ""){
+				$("#submit").attr("disabled", false);
+			}
+			
+		} else {
+			
+			$("#submit").attr("disabled", true);				
+			
+		} 
+		
+	});
+    // 전체 자산 입력시 입력 허용
+	$("#regdate").blur(function() {
+		var stock = $('#stock').val();
+		var deposit = $('#deposit').val();
+		var house = $('#house').val();
+		var fund = $('#fund').val();
+		var bond = $('#bond').val();
+		var gold = $('#gold').val();
+		var regdate = $('#regdate').val();
+		
+		if(regdate != ""){
+			
+			if(deposit != "" && house != "" && fund != "" && bond != "" && gold != "" && stock != ""){
+				$("#submit").attr("disabled", false);
+			}
+			
+		} else {
+			
+			$("#submit").attr("disabled", true);				
+			
+		} 
+		
+	});
+	</script>
 
 </body>
 

@@ -58,7 +58,14 @@ public class UserService {
 		
 		return userDao.getUser(id);
 	}
-
 	
+	//중복아이디 체크
+	public int userIdCheck(String id) {
+		User user = userDao.getUser(id);
+		if(user != null && user.getId() != null && user.getId().equals(id)) {
+			return 1;
+		}
+		else return 0;
+	}
 }
 

@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ob.dto.Portfolio;
 import com.ob.dto.Property;
 import com.ob.dto.User;
 import com.ob.service.PropertyService;
@@ -124,9 +125,32 @@ public class ObAssetController {
              
              //ID,password 미입력 or 잘못 입력시 로그인 페이지로 다시 이동
              if(!loginUser) {
+            	 session.setAttribute("loginResult", "아이디 또는 비밀번호가 잘못되었습니다.");
                  return "redirect:/"; 
               } else {
+             	 user = userService.getUser(user.getId());
                  session.setAttribute("loginOK", user.getId());
+                 String bank = null;
+         		switch(user.getBank()) {
+         		
+         		case "ibk":
+         			bank="img/ibk_logo.png";
+         			break;
+         		case "nh":
+         			bank="img/nh_logo.png";
+         			break;
+         		case "sh":
+         			bank="img/sh_logo.jpg";
+         			break;
+         		case "kb":
+         			bank="img/kb_logo.jpg";
+         			break;
+         		case "wr":
+         			bank="img/wr_logo.jpg";
+         			break;
+         		}
+         		session.setAttribute("bank", bank);
+
                  user = userService.getUser(user.getId());
                  totalPropertyService.setBarChartData(model, user.getGeneration(), user.getId(), year);
                  List<Integer> list = propertyService.getMonthlyProperty(user.getId(), "2021");
@@ -220,6 +244,19 @@ public class ObAssetController {
 			return "redirect:/login";
 	}
 	
+	@RequestMapping("/board")
+	public String board(HttpSession session) {
+		
+		String id = (String)session.getAttribute("loginOK");
+		
+		// 로그인 세션이 있는 경우
+		if(id!=null && !id.equals(""))
+			return "board";			
+		// 로그인 세션이 없는 경우
+		else 
+			return "redirect:/login";
+	}
+	
 	@GetMapping("/updateAge")
 	public String updateAge(int age, ModelMap model, HttpSession session) {
 		
@@ -237,7 +274,13 @@ public class ObAssetController {
 			return "redirect:/login";
 		
 	}
-
 	
+	// 아이디 중복체크 
+	@RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCheck(@RequestParam("id") String id) {
+
+		return userService.userIdCheck(id);
+	}
 
 }
