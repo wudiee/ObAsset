@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import com.ob.dao.TotalPropertyDAO;
 import com.ob.dao.UserDAO;
 import com.ob.dto.Portfolio;
 import com.ob.dto.Property;
+import com.ob.dto.User;
 
 @Service
 public class TotalPropertyService {
@@ -20,9 +22,12 @@ public class TotalPropertyService {
    @Autowired
    TotalPropertyDAO totalPropertyDAO;
    
+   @Autowired
+   PropertyService propertyService;
+   
    public Portfolio getGenerationPortfolio(int age) {
       
-      if(age != 20 && age != 30 && age != 40 && age!=50)
+      if(age != 10 && age != 20 && age != 30 && age != 40 && age!=50)
          return null;
       
       List<Property> properties = totalPropertyDAO.getTotalPropertiesFromGeneration(age);
@@ -52,12 +57,12 @@ public class TotalPropertyService {
       for(double num : sumOfProperties)
          totalSum += num;
       
-      portfolio.setStock(Double.valueOf(String.format("%.4f",sumOfProperties[0]/totalSum)));
-      portfolio.setDeposit(Double.valueOf(String.format("%.4f",sumOfProperties[1]/totalSum)));
-      portfolio.setHouse(Double.valueOf(String.format("%.4f",sumOfProperties[2]/totalSum)));
-      portfolio.setFund(Double.valueOf(String.format("%.4f",sumOfProperties[3]/totalSum)));
-      portfolio.setBond(Double.valueOf(String.format("%.4f",sumOfProperties[4]/totalSum)));
-      portfolio.setGold(Double.valueOf(String.format("%.4f",sumOfProperties[5]/totalSum)));
+      portfolio.setStock(Double.valueOf(String.format("%.4f",(sumOfProperties[0]/totalSum)*100)));
+      portfolio.setDeposit(Double.valueOf(String.format("%.4f",(sumOfProperties[1]/totalSum)*100)));
+      portfolio.setHouse(Double.valueOf(String.format("%.4f",(sumOfProperties[2]/totalSum)*100)));
+      portfolio.setFund(Double.valueOf(String.format("%.4f",(sumOfProperties[3]/totalSum)*100)));
+      portfolio.setBond(Double.valueOf(String.format("%.4f",(sumOfProperties[4]/totalSum)*100)));
+      portfolio.setGold(Double.valueOf(String.format("%.4f",(sumOfProperties[5]/totalSum)*100)));
       
       return portfolio;
    }
@@ -200,16 +205,81 @@ public class TotalPropertyService {
       return portfolio;
       
    } 
+   
+   
    public boolean updateTotalProperty(Property property) {
-      
-      if(property == null || property.getId().equals(""))
-         return false;
-      
-      int row = totalPropertyDAO.updateTotalProperty(property);
-      
-      if(row==0)
-         return false;
-      else
-         return true;
-   }
+	      
+	      if(property == null || property.getId().equals(""))
+	         return false;
+	      
+	      List<Property> properties = propertyService.getUserProperty(property.getId());
+	      
+	      if(properties.size() == 0)
+	          return false;
+	      
+	      //0 : stock / 1 : deposit / 2 : house / 3: fund / 4 : bond / 5 : gold 
+	      int[] sumOfProperties = new int[6];
+	      
+	      for(Property tmpProperty : properties) {
+	         
+	         sumOfProperties[0] += tmpProperty.getStock();
+	         sumOfProperties[1] += tmpProperty.getDeposit();
+	         sumOfProperties[2] += tmpProperty.getHouse();
+	         sumOfProperties[3] += tmpProperty.getFund();
+	         sumOfProperties[4] += tmpProperty.getBond();
+	         sumOfProperties[5] += tmpProperty.getGold();
+	      }
+	      
+	      property.setStock(sumOfProperties[0]);
+	      property.setDeposit(sumOfProperties[1]);
+	      property.setHouse(sumOfProperties[2]);
+	      property.setFund(sumOfProperties[3]);
+	      property.setBond(sumOfProperties[4]);
+	      property.setGold(sumOfProperties[5]);
+	      
+	      
+	      int row = totalPropertyDAO.updateTotalProperty(property);
+	      
+	      if(row==0)
+	         return false;
+	      else
+	         return true;
+	   }
+   
+   	public boolean addTotalProperty(User user) {
+	   
+	   if(user==null || user.getId()==null)
+		   return false;
+	   else {
+		   
+		   int row = totalPropertyDAO.addTotalProperty(user.getId());
+		   
+		   if(row==0)
+		         return false;
+		      else
+		         return true;
+	   }
+	   
+   	}
+   	
+   	public void setBarChartData(ModelMap model, int age, String id, String year) {
+ 	   Portfolio portfolio = getGenerationPortfolio(age);
+ 	   model.addAttribute("barData", portfolio);
+ 	   model.addAttribute("age", age);
+ 	   
+ 	  Portfolio myPortfolio = getUserPortfolio(id);
+  	  model.addAttribute("myPortfolio",myPortfolio);
+  	 
+   	List<Portfolio> portfoilos = getSectorPortfolio(0.3);
+ 	
+ 	model.addAttribute("riskyPortfolio",portfoilos.get(0));
+ 	model.addAttribute("averagePortfolio",portfoilos.get(1));
+ 	model.addAttribute("safetyPortfolio",portfoilos.get(2));
+ 	
+ 	List<Integer> list = propertyService.getMonthlyProperty(id, year);
+    model.addAttribute("month", list);
+    }
+
+   	
+   	
 }

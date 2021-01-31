@@ -34,12 +34,12 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+           <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/ObAsset/index">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <img src="img/logo.png">
                 </div>
-                <div class="sidebar-brand-text mx-3">ObAsset</div>
+                <div class="sidebar-brand-text mx-1">ObAsset</div>
             </a>
 
             <!-- Divider -->
@@ -57,14 +57,18 @@
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="/ObAsset/portfolio">
-                    <i class="fas fa-fw fa-chart-area"></i>
                     <span>Portfolio Management</span></a>
             </li>
 
-            <!-- Nav Item - Tables -->
+			 <!-- Nav Item - Tables -->
             <li class="nav-item">
+                <a class="nav-link" href="/ObAsset/board">
+                    <span>Board</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item active">
                 <a class="nav-link" href="/ObAsset/news">
-                    <i class="fas fa-fw fa-table"></i>
                     <span>Financial Video</span></a>
             </li>
 
@@ -73,7 +77,6 @@
             
               <li class="nav-item">
                 <a class="nav-link collapsed" href="/ObAsset/logout">
-                    <i class="fas fa-fw fa-wrench"></i>
                     <span>Logout</span>
                 </a>
             </li>
@@ -128,9 +131,8 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/ibk.png">
+                                <div><span class="mr-2 d-none d-lg-inline text-gray-600 small">${loginOK} 님 반갑습니다.</span></div>
+                                <img class="img-profile rounded-circle" src="${bank}">
                             </a>
                             
                             <!-- Dropdown - User Information -->
