@@ -151,39 +151,39 @@
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h3 text-gray-900 mb-4"><b>자산 입력</b></h1>
-                                        <h1 class="h6 text-gray-900 mb-4">(단위: 만원)</h1>
+                                        <h1 class="h6 text-gray-900 mb-4">(단위 : 만원)</h1>
                                     </div>
                                     <form class="user" action="addProperty" method="post">
                                     <input type="hidden" name="id" value = "${loginOK}">
                                     
                                         <div class="form-group">
-                                         <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"
+                                         <input type="text" onKeyup="this.value=this.value.replace(/[^0-9-]/g,'');"
                                           name="stock" class="form-control form-control-user"
                                                 id="stock" aria-describedby="emailHelp"
                                                 placeholder="주식" > 
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9-]/g,'');" 
                                             name="deposit" class="form-control form-control-user"
                                                 id="deposit" placeholder="예적금">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9-]/g,'');" 
                                             name="house" class="form-control form-control-user"
                                                 id="house" placeholder="부동산">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9-]/g,'');" 
                                             name="fund" class="form-control form-control-user"
                                                 id="fund" placeholder="펀드">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9-]/g,'');" 
                                             name="bond" class="form-control form-control-user"
                                                 id="bond" placeholder="채권">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"  
+                                            <input type="text" onKeyup="this.value=this.value.replace(/[^0-9-]/g,'');"  
                                             name="gold" class="form-control form-control-user"
                                                 id="gold" placeholder="금">
                                         </div>
@@ -193,7 +193,8 @@
                                         </div>
                                         
                                        <input type="submit" class="btn btn-primary btn-user btn-block" 
-                                       		  id="submit" value="입력하기" disabled="">
+                                       		  id="submit" value="입력하기" disabled=""><br>
+                                       	<h6 class="h6 text-gray-900 mb-4 text-right">손해일시 "-"기호를 숫자 앞에 붙여주세요</h6>
 
                                     </form>
                                 </div>

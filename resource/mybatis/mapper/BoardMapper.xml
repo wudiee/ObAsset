@@ -3,14 +3,19 @@
 <mapper namespace="com.ob.dao.BoardDAO">
 
 	<select id="getBoards" resultType="com.ob.dto.Board">
-		select * from boards order by seq desc
+		select * from boards order by regdate
 	</select>
 	<select id="getBoard" resultType="com.ob.dto.Board" parameterType="com.ob.dto.Board">
-		select * from boards where id = #{id}
+		select TO_CHAR(regdate, 'YY-MM-DD') as regdate, id, seq, title, content, cnt from boards where id = #{id} and seq = #{seq}
 	</select>
 	<insert id="addBoard" parameterType="com.ob.dto.Board">
 		insert into boards(seq, id, title, content, regdate) values(boardseq.nextval, #{id}, #{title},
 		#{content}, sysdate)
 	</insert>
-
+	<delete id="deleteBoard" parameterType="com.ob.dto.Board">
+		delete boards where id = #{id} and seq = #{seq}
+	</delete>
+	<update id="updateBoard" parameterType="com.ob.dto.Board">
+		update boards set title = #{title}, content = #{content} where seq = ${seq}
+	</update>
 </mapper>
