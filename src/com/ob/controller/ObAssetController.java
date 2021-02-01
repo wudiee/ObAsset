@@ -9,13 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ob.dto.Board;
 import com.ob.dto.Property;
 import com.ob.dto.User;
+import com.ob.service.BoardService;
 import com.ob.service.PropertyService;
 import com.ob.service.TotalPropertyService;
 import com.ob.service.UserService;
@@ -34,6 +37,9 @@ public class ObAssetController {
    @Autowired
 	PropertyService propertyService;
 
+   @Autowired
+   BoardService boardService;
+   
    @RequestMapping("/register")
 	public String register(HttpSession session, ModelMap model) {
 		
@@ -245,17 +251,128 @@ public class ObAssetController {
 	}
 	
 	@RequestMapping("/board")
-	public String board(HttpSession session) {
+	public String board(HttpSession session, ModelMap model) {
 		
 		String id = (String)session.getAttribute("loginOK");
 		
 		// 로그인 세션이 있는 경우
-		if(id!=null && !id.equals(""))
-			return "board";			
+		if(id!=null && !id.equals("")) {
+			model.addAttribute("boardList", boardService.getBoards());
+			return "board/board";
+		}
 		// 로그인 세션이 없는 경우
 		else 
 			return "redirect:/login";
 	}
+	
+	// 글쓰기 기능
+	@RequestMapping("/write")
+	public String write(HttpSession session) {
+		
+		String id = (String)session.getAttribute("loginOK");
+		
+		// 로그인 세션이 있는 경우
+		if(id!=null && !id.equals("")) {
+			return "board/write";			
+		}
+		// 로그인 세션이 없는 경우
+		else 
+			return "redirect:/login";
+	}
+	
+	@RequestMapping("/content")
+	public String content(@RequestParam("id")String auth, @RequestParam("seq")Integer seq, HttpSession session, ModelMap model) {
+		
+		String id = (String)session.getAttribute("loginOK");
+		
+		// 로그인 세션이 있는 경우
+		if(id!=null && !id.equals("")) {
+			Board board = new Board();
+			board.setSeq(seq);
+			board.setId(auth);
+			board = boardService.getBoard(board);
+			board.setCnt(board.getCnt()+1);
+			boardService.updateBoard(board);
+			model.addAttribute("board",board);
+			return "board/content";			
+		}
+		// 로그인 세션이 없는 경우
+		else 
+			return "redirect:/login";
+	}
+	
+	// 게시판 content 삭제기능
+	@RequestMapping("/contentdelete")
+	public String contentdelete(@RequestParam("id")String auth, @RequestParam("seq")Integer seq, HttpSession session) {
+		
+		String id = (String)session.getAttribute("loginOK");
+		
+		// 로그인 세션이 있는 경우
+		if(id!=null && !id.equals("")) {
+			Board board = new Board();
+			board.setSeq(seq);
+			board.setId(auth);
+			board = boardService.getBoard(board);
+			boardService.deleteBoard(board);
+			return "redirect:/board";			
+		}
+		// 로그인 세션이 없는 경우
+		else 
+			return "redirect:/login";
+	}
+	
+	// 게시판 content 등록기능
+	@RequestMapping("/contentwrite")
+	public String contentwrite(HttpSession session, Board board) {
+		
+		String id = (String)session.getAttribute("loginOK");
+		
+		// 로그인 세션이 있는 경우
+		if(id!=null && !id.equals("")) {
+			boardService.addBoard(board);
+			return "redirect:/board";			
+		}
+		// 로그인 세션이 없는 경우
+		else 
+			return "redirect:/login";
+	}
+	
+	// 게시판 content 수정기능
+	@RequestMapping("/contentupdate")
+	public String contentupdate(HttpSession session, Board board) {
+		
+		String id = (String)session.getAttribute("loginOK");
+		
+		// 로그인 세션이 있는 경우
+		if(id!=null && !id.equals("")) {
+			System.out.println(board);
+			boardService.updateBoard(board);
+			return "redirect:/board";			
+		}
+		// 로그인 세션이 없는 경우
+		else 
+			return "redirect:/login";
+	}
+	
+	// 게시판 내용 업데이트
+		@RequestMapping("/update")
+		public String update(@RequestParam("id")String auth, @RequestParam("seq")Integer seq, HttpSession session, ModelMap model) {
+			
+			String id = (String)session.getAttribute("loginOK");
+			
+			// 로그인 세션이 있는 경우
+			if(id!=null && !id.equals("")) {
+				Board board = new Board();
+				board.setSeq(seq);
+				board.setId(auth);
+				board = boardService.getBoard(board);
+				model.addAttribute(board);
+				return "board/update";			
+			}
+			// 로그인 세션이 없는 경우
+			else 
+				return "redirect:/login";
+		}
 	
 	@GetMapping("/updateAge")
 	public String updateAge(int age, ModelMap model, HttpSession session) {

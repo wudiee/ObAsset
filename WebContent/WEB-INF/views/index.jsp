@@ -185,7 +185,7 @@
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-secondary"></i> 주식
+                                            <i class="fas fa-circle text-danger"></i> 주식
                                         </span>
                                         <span class="mr-2">
                                             <i class="fas fa-circle text-success"></i> 예적금
@@ -240,7 +240,7 @@
                                     <h4 class="small font-weight-bold">주식 <span
                                             class="float-right">${barData.stock}%</span></h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-secondary" role="progressbar" style="width: ${barData.stock}%"
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: ${barData.stock}%"
                                             aria-valuenow="${barData.stock}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <h4 class="small font-weight-bold">예적금<span
@@ -307,7 +307,7 @@
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-secondary"></i> 주식
+                                            <i class="fas fa-circle text-danger"></i> 주식
                                         </span>
                                         <span class="mr-2">
                                             <i class="fas fa-circle text-success"></i> 예적금
@@ -347,7 +347,7 @@
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-secondary"></i> 주식
+                                            <i class="fas fa-circle text-danger"></i> 주식
                                         </span>
                                         <span class="mr-2">
                                             <i class="fas fa-circle text-success"></i> 예적금
@@ -387,7 +387,7 @@
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-secondary"></i> 주식
+                                            <i class="fas fa-circle text-danger"></i> 주식
                                         </span>
                                         <span class="mr-2">
                                             <i class="fas fa-circle text-success"></i> 예적금
@@ -555,7 +555,7 @@
 	          padding: 10,
 	          // Include a dollar sign in the ticks
 	          callback: function(value, index, values) {
-	            return '$' + number_format(value);
+	            return '￦' + number_format(value);
 	          }
 	        },
 	        gridLines: {
@@ -607,8 +607,8 @@
 	    
 	    datasets: [{
 	      data: [${myPortfolio.stock}*100,${myPortfolio.deposit}*100,${myPortfolio.house}*100,${myPortfolio.fund}*100,${myPortfolio.bond}*100,${myPortfolio.gold}*100],
-	      backgroundColor: ['#858796', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
-	      hoverBackgroundColor: ['#60616f', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
+	      backgroundColor: ['#e74a3b', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
+	      hoverBackgroundColor: ['#be2617', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
 	      hoverBorderColor: "rgba(234, 236, 244, 1)",
 	    }],
 	  },
@@ -640,8 +640,8 @@
 		    
 		    datasets: [{
 			  data: [${riskyPortfolio.stock}*100,${riskyPortfolio.deposit}*100,${riskyPortfolio.house}*100,${riskyPortfolio.fund}*100,${riskyPortfolio.bond}*100,${riskyPortfolio.gold}*100],
-		      backgroundColor: ['#858796', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
-		      hoverBackgroundColor: ['#60616f', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
+			  backgroundColor: ['#e74a3b', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
+		      hoverBackgroundColor: ['#be2617', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
 		      hoverBorderColor: "rgba(234, 236, 244, 1)",
 		    }],
 		  },
@@ -673,8 +673,8 @@
 		    
 		    datasets: [{
 			  data: [${averagePortfolio.stock}*100,${averagePortfolio.deposit}*100,${averagePortfolio.house}*100,${averagePortfolio.fund}*100,${averagePortfolio.bond}*100,${averagePortfolio.gold}*100],
-		      backgroundColor: ['#858796', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
-		      hoverBackgroundColor: ['#60616f', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
+			  backgroundColor: ['#e74a3b', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
+		      hoverBackgroundColor: ['#be2617', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
 		      hoverBorderColor: "rgba(234, 236, 244, 1)",
 		    }],
 		  },
@@ -706,8 +706,8 @@
 		    
 		    datasets: [{
 			  data: [${safetyPortfolio.stock}*100,${safetyPortfolio.deposit}*100,${safetyPortfolio.house}*100,${safetyPortfolio.fund}*100,${safetyPortfolio.bond}*100,${safetyPortfolio.gold}*100],
-		      backgroundColor: ['#858796', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
-		      hoverBackgroundColor: ['#60616f', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
+			  backgroundColor: ['#e74a3b', '#1cc88a', '#36b9cc', '#4e73df', '#5a5c69', '#f6c23e'],
+		      hoverBackgroundColor: ['#be2617', '#13855c', '#258391', '#224abe', '#373840', '#dda20a'],
 		      hoverBorderColor: "rgba(234, 236, 244, 1)",
 		    }],
 		  },
