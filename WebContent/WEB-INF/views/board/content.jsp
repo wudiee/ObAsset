@@ -81,6 +81,12 @@
                     <span>Logout</span>
                 </a>
             </li>
+            
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="modal" data-target="#signOutModal">
+                    <span>Withdraw</span>
+                </a>
+            </li>
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -159,20 +165,20 @@
 			
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                	<table>
+                                	<table style="width: 100%">
                                 		<tr>
-                                			<td scope="col" style="width: 90%" class="text-left">
+                                			<td  style="width: 70%" class="text-left">
                                               <h5 class="m-0 font-weight-bold text-primary"><%=board.getTitle() %></h5>
                                 		    </td>
-                                		     <td scope="col" style="width: 10%" class="text-right">
-                                		 	 <h6 class="m-0">조회수: <%=board.getCnt() %></h6>
+                                		     <td style="width: 30%" class="text-right">
+                                		 	 <h6 class="m-0" >조회수: <%=board.getCnt() %></h6>
                                 		    </td>
                                 		</tr>
                                 		<tr>
-                                			<td scope="col" style="width: 90%" class="text-left">
+                                			<td style="width: 70%" class="text-left">
                                 		 	 <h6 class="m-0"><%=board.getId() %></h6>
                                 		    </td>
-                                			<td scope="col" style="width: 10%" class="text-right">
+                                			<td style="width: 30%" class="text-right">
                                 		 	 <h6 class="m-0"><%=board.getRegdate() %></h6>
                                 		 </td>
                                 		</tr>
@@ -184,7 +190,17 @@
                                 		<h6 class="m-0"><%=board.getContent() %></h6>
                                    </div>
                                 </div>
+                                
+                                 <div class="card-footer">
+                    
+   										<input id = "replytext" class="form-control"
+      											placeholder="댓글을 입력해주세요." style="float: left; width: 90%" onKeypress="javascript:if(event.keyCode==13) {insertReply()}"required>
+      									<button type="button" id ="btnReply" style="float: left; width: 10%" class="btn btn-sm btn-primary shadow-sm mt-1">등록</button><br>
+					
+                                </div>
+                                <div class="card-footer" id="listReply"></div>
                             </div>
+                            
                             <% 
                             	if(board.getId().equals((String)session.getAttribute("loginOK"))){
                             %>
@@ -197,6 +213,7 @@
                        <%} %>
                   </div>
                 </div>
+                  
                 <!-- /.container-fluid -->
 
             </div>
@@ -222,7 +239,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
+    
 	<!-- 게시물 삭제 Modal -->
    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -242,7 +259,30 @@
             </div>
         </div>
     </div>
-
+	
+	<!-- sign out Modal-->
+    <div class="modal fade" id="signOutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">회원탈퇴</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        
+                    </button>
+                </div>
+                
+                 <input type="password" id = "signOut_password" class="form-control"
+      											placeholder="탈퇴 인증을 위해 비밀번호를 입력해주세요." required>
+                	<div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="#" onclick="signOut()">Withdraw</a>
+                    </div>
+                    </div>
+            
+        </div>
+    </div>
+    
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -262,6 +302,7 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -273,6 +314,146 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
+    <script>
+    
+    	$(document).ready(function(){
+    	
+    	listReply();
+    	
+    	$("#btnReply").click(function(){
+    		
+    		var seq = "${board.getSeq()}";
+			var id = "${loginOK}";
+    		var replytext = $("#replytext").val();
+    		var param = "id="+ id+"&seq="+seq+"&content="+replytext;
+    		$.ajax({
+    			url : "${pageContext.request.contextPath}/comment/insert",
+    			type : 'post',
+    			data : param,
+    			success: function(result){
+    				
+    				if(result){
+    					alert("댓글이 등록되었습니다.");
+    					$("#replytext").val('');
+    					listReply();
+    				}
+    			
+    			}
+    		})
+    	});
+    	
+    });
+    	
+   	function insertReply(){
+   		
+   		var seq = "${board.getSeq()}";
+		var id = "${loginOK}";
+		var replytext = $("#replytext").val();
+		var param = "id="+ id+"&seq="+seq+"&content="+replytext;
+		$.ajax({
+			url : "${pageContext.request.contextPath}/comment/insert",
+			type : 'post',
+			data : param,
+			success: function(result){
+				
+				if(result){
+					alert("댓글이 등록되었습니다.");
+					$("#replytext").val('');
+					listReply();
+				}
+			
+			}
+		})
+	}
+    	
+    function deleteReply(tmpReplyno){
+
+    		var seq = "${board.getSeq()}";
+			var replyno =  tmpReplyno;
+    		var param = "seq="+seq+"&replyno="+replyno;
+    		
+    		$.ajax({
+    			url : "${pageContext.request.contextPath}/comment/delete",
+    			type : 'post',
+    			data : param,
+    			success: function(result){
+    				
+    				if(result){
+    					alert("댓글이 삭제되었습니다.");
+    					listReply();
+    				}
+    			
+    			}
+    		})
+  
+    }
+  
+    function listReply(){
+    	
+		var seq = "${board.getSeq()}";
+    	
+    	$.ajax({
+    		
+    		type : "get",
+    		url : "${pageContext.request.contextPath}/comment/get?seq="+seq,
+    		success: function(result){
+    			
+    			var output ="";
+    			
+    			for(var i in result){
+    				
+    				output += "<table><tr>";
+    				output += "<td>"+result[i].id;
+    				output += " ("+result[i].regdate+")</td>";
+    				
+    				if(result[i].id == "${loginOK}"){
+    					
+    					//output += "<td><button onclick=\"deleteReply("+result[i].replyno+")\" type=\"button\" id =\"btnDelete\"class=\" btn text-danger\">x</button><br></td>";
+
+    					output += " <td><a onclick=\"+deleteReply("+result[i].replyno+")\"class=\"btn text-danger\">x</a></td>";
+    				}
+    				output += "<tr><td>"+result[i].content+"</td></tr>";
+    				output += "</table>";
+    				output += "<hr>";
+    			}
+    			$("#listReply").html(output);
+    		}
+    		
+    	});
+    }
+    </script>
+    
+    <script>
+	
+	function signOut(){
+		
+		var id = "${loginOK}";
+		var password = $("#signOut_password").val();
+		
+		if(password ==""){
+			alert("비밀번호를 입력해주세요");
+			return;
+		}
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/withdraw?id="+id+"&password="+password,
+			type : 'get',
+			//data : param,
+			success: function(result){
+				
+				if(result==0){
+					alert("성공적으로 회원탈퇴 되었습니다.");
+					window.location.reload();
+				}
+				else if(result==1)
+					alert("비밀번호가 일치하지 않습니다.");
+				else
+					alert("회원탈퇴에 실패하였습니다.\n다시 시도해주세요.");
+				
+			}
+		})
+	}
+	</script>
 </body>
 
 </html>

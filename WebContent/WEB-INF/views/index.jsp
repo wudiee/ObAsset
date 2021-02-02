@@ -73,9 +73,15 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             
-          <li class="nav-item">
+         	 <li class="nav-item">
                 <a class="nav-link collapsed" href="/ObAsset/logout">
                     <span>Logout</span>
+                </a>
+            </li>
+            
+             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="modal" data-target="#signOutModal">
+                    <span>Withdraw</span>
                 </a>
             </li>
 
@@ -139,6 +145,8 @@
                                     Logout
                                 </a>
                             </div>
+                            
+                            
                         </li>
                     </ul>
                 </nav>
@@ -435,6 +443,29 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+    
+    <!-- sign out Modal-->
+    <div class="modal fade" id="signOutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">회원탈퇴</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        
+                    </button>
+                </div>
+                
+                 <input type="password" id = "signOut_password" class="form-control"
+      											placeholder="탈퇴 인증을 위해 비밀번호를 입력해주세요." required>
+                	<div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="#" onclick="signOut()">Withdraw</a>
+                    </div>
+                    </div>
+            
+        </div>
+    </div>
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -729,6 +760,39 @@
 		    cutoutPercentage: 80,
 		  },
 		});
+	
+	</script>
+	
+	<script>
+	
+	function signOut(){
+		
+		var id = "${loginOK}";
+		var password = $("#signOut_password").val();
+		
+		if(password ==""){
+			alert("비밀번호를 입력해주세요");
+			return;
+		}
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/withdraw?id="+id+"&password="+password,
+			type : 'get',
+			//data : param,
+			success: function(result){
+				
+				if(result==0){
+					alert("성공적으로 회원탈퇴 되었습니다.");
+					window.location.reload();
+				}
+				else if(result==1)
+					alert("비밀번호가 일치하지 않습니다.");
+				else
+					alert("회원탈퇴에 실패하였습니다.\n다시 시도해주세요.");
+				
+			}
+		})
+	}
 	</script>
 </body>
 

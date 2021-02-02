@@ -66,6 +66,37 @@
                                   <div class="mr-2 d-none d-lg-inline small" style="color:red" id="password_check"></div>
                                 </div>         
                                 
+                                <table style="width: 100%">
+                                	<tr>
+                                		<td style="width: 75%">
+                                		<!-- 이메일 입력 -->              
+                                		<div class="form-group">
+                                  			<input type="email" name="email" class="form-control form-control-user" 
+                                  			id="email" placeholder="Email" required>
+                                		</div>    
+                                		</td>
+                                		
+                                		<td style="width: 25%" class="text-right">
+                                			<button type="button" id="btnSend" onclick="sendCode()" class="btn btn-sm btn-primary shadow-sm mb-3">인증 요청</button><br>
+                                		</td>
+                                	</tr>
+                                	
+                                	<tr>
+                                		<td style="width: 75%">
+                            			    <div class="form-group">
+                              			    <input type="text" class="form-control form-control-user" 
+                              			    id="code" placeholder="Code" required disabled="">
+                             			   </div>          
+                                		</td>
+                                		
+                                		<td style="width: 25%" class="text-right">
+                                			<button type="button" id="btnCheck" onclick="checkCode()" class="btn btn-sm btn-primary shadow-sm mb-3">인증 확인</button><br>
+                                		</td>
+                                	</tr>
+                                </table>
+                      
+                                
+                                
                                 <!-- 연령대 선택 -->
                                * 연령대를 선택해주세요 <br>
                                 <div class="custom-control custom-radio">
@@ -139,7 +170,11 @@
     <script src="js/sb-admin-2.min.js"></script>
     
     <script>
+    
     idFlag = false;
+    confirmFlag = false;
+    randCode = "-1";
+    
 	// 아이디 유효성 검사(1 = 중복 / 0 != 중복)
 	$("#id").blur(function() {
 		// id = "id_reg" / name = "userId"
@@ -167,7 +202,8 @@
 							idFlag = true;
 						
 							if(password != "" && name !=""){
-								$("#reg_submit").attr("disabled", false);
+								if(confirmFlag)
+									$("#reg_submit").attr("disabled", false);
 							}
 							
 						} else {
@@ -193,11 +229,11 @@
 			$("#password_check").text("");
 			
 			if(id != "" && name !="" && idFlag){
-				$("#reg_submit").attr("disabled", false);
+				if(confirmFlag)
+					$("#reg_submit").attr("disabled", false);
 			}
 			
 		} else {
-			
 			$('#password_check').text('비밀번호를 입력해주세요 :)');
 			$('#password_check').css('color', 'red');
 			$("#reg_submit").attr("disabled", true);				
@@ -207,6 +243,7 @@
 	});
 	// 이름 유효성 검사
 	$("#name").blur(function() {
+		
 		var user_id = $('#id').val();
 		var password = $('#password').val();
 		var name = $('#name').val();	
@@ -215,18 +252,80 @@
 			$("#name_check").text("");
 			
 			if(id != "" && password !="" && idFlag){
-				$("#reg_submit").attr("disabled", false);
+				
+				if(confirmFlag)
+					$("#reg_submit").attr("disabled", false);
 			}
 			
 		} else {
-			
-			$('#name_check').text('이름을 입력해주세요 :)');
-			$('#name_check').css('color', 'red');
+			$("#name_check").text('이름을 입력해주세요 :)');
+			$("#name_check").css('color', 'red');
 			$("#reg_submit").attr("disabled", true);				
 			
 		} 
-		
+	
 	});
+	
+	
+	function sendCode(){
+
+		var email = $("#email").val();
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/confirm/send?email="+email,
+			type : 'get',
+			//data : param,
+			success: function(result){
+				
+				if(result != -1){
+					alert(email+"에 인증코드가 발송되었습니다.");
+					$("#email").attr("readonly", true);
+					$("#code").attr("disabled", false);						
+					//alert(result+"에 인증코드가 발송되었습니다.");
+					randCode = result;
+				}
+				else{
+					alert("인증코드 발송이 실패하였습니다.\n이메일 확인 부탁 드립니다.");
+					randCode = -1;
+				}
+			}
+		})
+	
+		
+	}
+	
+	function checkCode(){
+		
+		var id = $('#id').val();
+		var password = $('#password').val();
+		var name = $('#name').val();
+		var code = $("#code").val();
+		
+		if(randCode == -1){
+			alert("인증 코드를 요청해주세요.")
+			return;
+		}
+		
+		if(code == randCode){
+			alert("인증에 성공했습니다.");
+			$("#code").attr("disabled", true);
+			$("#btnSend").attr("disabled", true);
+			$("#btnCheck").attr("disabled", true);
+			confirmFlag = true;
+			
+	
+			if(id != "" && name !="" && password != "" && idFlag){
+				if(confirmFlag)
+					$("#reg_submit").attr("disabled", false);
+					
+			}
+		}
+		else{
+			alert("인증에 실패했습니다.\n인증 코드를 확인해주세요.");			
+		}
+	
+	}
+	
     </script>
 
 </body>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ob.dao.CommentDAO">
+
+	<select id="getComments" resultType="com.ob.dto.Comments">
+		select * from comments where seq=#{seq} order by replyno asc
+	</select>
+	<select id="getComment" resultType="com.ob.dto.Comments" parameterType="com.ob.dto.Comments">
+		select id, content, regdate from comments where seq = #{seq}
+	</select>
+	<insert id="addComment" parameterType="com.ob.dto.Comments">
+		insert into comments(replyno, seq, id, content, regdate) values(commentseq.nextval, #{seq}, #{id}, #{content}, sysdate)
+	</insert>
+	<delete id="deleteComment" parameterType="com.ob.dto.Comments">
+		delete comments where replyno = #{replyno} and seq = #{seq}
+	</delete>
+	<update id="updateComment" parameterType="com.ob.dto.Comments">
+		update comments set content = #{content}, regdate = sysdate where replyno = {replyno} and seq = ${seq}
+	</update>
+</mapper>

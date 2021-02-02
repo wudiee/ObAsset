@@ -11,8 +11,19 @@
 	</select>
 	
 	<insert id="addUser" parameterType="com.ob.dto.User">
-		insert into users(id, password, name, generation, bank) values (#{id},#{password},#{name},#{generation},#{bank})
+		insert into users(id, password, name, generation, bank, email) values (#{id},#{password},#{name},#{generation},#{bank},#{email})
 	</insert>
 	
+	<delete id="deleteUser" parameterType="com.ob.dto.User">
+		delete users where id=#{id}
+	</delete>
+	
+	<select id="findId" resultType="com.ob.dto.User" parameterType="com.ob.dto.User">
+		select * from users where email = #{email}
+	</select>
+	
+	<select id="findPassword" resultType="com.ob.dto.User" parameterType="com.ob.dto.User">
+		select * from users where id = #{id} and email = #{email}
+	</select>
 	
 </mapper>
