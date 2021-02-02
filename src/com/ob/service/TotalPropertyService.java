@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
 import com.ob.dao.TotalPropertyDAO;
@@ -25,6 +26,7 @@ public class TotalPropertyService {
    @Autowired
    PropertyService propertyService;
    
+   @Transactional(readOnly = true)
    public Portfolio getGenerationPortfolio(int age) {
       
       if(age != 10 && age != 20 && age != 30 && age != 40 && age!=50)
@@ -67,6 +69,7 @@ public class TotalPropertyService {
       return portfolio;
    }
    
+   @Transactional(readOnly = true)
    public List<Portfolio> getSectorPortfolio(double riskyAssetRate){
       
       if(riskyAssetRate > 1 || riskyAssetRate <=0)
@@ -166,6 +169,7 @@ public class TotalPropertyService {
       return portfolios;
    }
    
+   @Transactional(readOnly = true)
    public Portfolio getUserPortfolio(String id) {
       
       if(id.equals(""))
@@ -206,7 +210,7 @@ public class TotalPropertyService {
       
    } 
    
-   
+   @Transactional(readOnly = false)
    public boolean updateTotalProperty(Property property) {
 	      
 	      if(property == null || property.getId().equals(""))
@@ -246,6 +250,7 @@ public class TotalPropertyService {
 	         return true;
 	   }
    
+   @Transactional(readOnly = false)
    	public boolean addTotalProperty(User user) {
 	   
 	   if(user==null || user.getId()==null)
@@ -262,6 +267,7 @@ public class TotalPropertyService {
 	   
    	}
    	
+   @Transactional(readOnly = true)
    	public void setBarChartData(ModelMap model, int age, String id, String year) {
  	   Portfolio portfolio = getGenerationPortfolio(age);
  	   model.addAttribute("barData", portfolio);

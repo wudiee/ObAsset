@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ob.dao.TotalPropertyDAO">
+
+	<select id="getTotalProperties" resultType="com.ob.dto.Property">
+		select * from totalproperty 
+	</select>
+	
+	<select id="getTotalProperty" resultType="com.ob.dto.Property">
+		select * from totalproperty where id = #{id}
+	</select>
+	
+	<select id="getTotalPropertiesFromGeneration" resultType="com.ob.dto.Property">
+		select users.id, stock, deposit,house,fund,bond,gold from users, totalproperty where users.id=totalproperty.id and generation=#{generation}
+	</select>
+	
+	<update id="updateTotalProperty" parameterType="com.ob.dto.Property">
+		update totalproperty set stock = #{stock}, deposit = #{deposit}, house = #{house}, fund = #{fund},  bond = #{bond},  gold = #{gold} where id = #{id}
+	</update>
+	
+	<insert id="addTotalProperty">
+		insert into totalproperty(id) values (#{id})
+	</insert>
+
+</mapper>
+

@@ -6,11 +6,13 @@ public class User {
 	private String name;
 	private int generation;
 	private String bank;
+	private String email;
 	
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", password=" + password + ", name=" + name + ", generation=" + generation + ", bank="
-				+ bank + "]";
+				+ bank + ", email=" + email + "]";
 	}
 
 	public String getId() {
@@ -52,5 +54,15 @@ public class User {
 	public void setBank(String bank) {
 		this.bank = bank;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
 
 }

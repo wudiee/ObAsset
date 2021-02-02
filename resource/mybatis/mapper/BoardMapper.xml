@@ -16,6 +16,6 @@
 		delete boards where id = #{id} and seq = #{seq}
 	</delete>
 	<update id="updateBoard" parameterType="com.ob.dto.Board">
-		update boards set title = #{title}, content = #{content} where seq = ${seq}
+		update boards set title = #{title}, content = #{content}, cnt = #{cnt} where seq = ${seq}
 	</update>
 </mapper>
