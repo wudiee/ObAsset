@@ -1,5 +1,7 @@
 package com.ob.config;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
@@ -8,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -23,14 +27,35 @@ public class ApplicationConfig {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriverClass(oracle.jdbc.driver.OracleDriver.class);
 		dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
-		dataSource.setUsername("master");
-		dataSource.setPassword("1004");
+		dataSource.setUsername("scott");
+		dataSource.setPassword("TIGER");
 		return dataSource;
 	}
 	
 	@Bean
 	public PlatformTransactionManager transactionManager() {
 		return new DataSourceTransactionManager(dataSource());
+	}
+
+	@Bean
+	public JavaMailSender getJavaMailSender() {
+		Properties properties = new Properties(); 
+		properties.put("mail.smtp.auth", true);
+		properties.put("mail.transport.protocol", "smtp");
+		properties.put("mail.smtp.starttls.enable", true);
+		properties.put("mail.smtp.starttls.required", true);
+		properties.put("mail.debug", true);
+		
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		mailSender.setHost("smtp.gmail.com");
+		mailSender.setPort(587);
+		mailSender.setUsername("janice10508@gmail.com");
+		mailSender.setPassword("janice1004");
+		mailSender.setDefaultEncoding("utf-8");
+		mailSender.setJavaMailProperties(properties);
+		
+		return mailSender;
+		
 	}
 
 

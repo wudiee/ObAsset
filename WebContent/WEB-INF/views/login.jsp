@@ -73,10 +73,17 @@
                                            name="login_submit" id="login_submit" value="로그인" disabled="">
 
                                     </form>
+                                    
                                     <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="/ObAsset/register">Sign Up</a>
+                                     <div class="text-center">
+                                        <a class="small" href="/ObAsset/findId">아이디 찾기</a>
+                                        <a class="small" href="/ObAsset/findPassword">비밀번호 찾기</a>
                                     </div>
+                                    
+                                    <div class="text-center">
+                                        <a class="small" href="/ObAsset/register">회원가입</a>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

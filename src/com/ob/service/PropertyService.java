@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ob.dao.PropertyDAO;
 import com.ob.dto.Property;
@@ -14,14 +15,19 @@ public class PropertyService {
 	@Autowired
 	private PropertyDAO propertydao;
 	
+	@Transactional(readOnly = true)
 	public List<Property> getUserProperty(String id){ 
 		//=> 내 자산 추이에서 사용 (property) --성공
 		return propertydao.getProperties(id);
 	}
+	
+	@Transactional(readOnly = true)
 	public boolean checkProperty(Property property) {
 		//=> 자산 입력시, 해당 월에 데이터가 있는지 확인
 		return propertydao.getProperty(property) != null;
 	}
+	
+	@Transactional(readOnly = false)
 	public boolean addProperty(Property property) {
 		// => 자산 입력시, 해당 월에 데이터가 없으면 사용
 		  if (!checkProperty(property)) { 
@@ -29,6 +35,8 @@ public class PropertyService {
 		  return true;
 		  } else return false;
 	}
+	
+	@Transactional(readOnly = false)
 	public boolean updateProperty(Property property) { 
 		//=> 자산 입력시, 해당 월에 데이터가 있으면 업데이트 (property) --성공
 		 if (checkProperty(property)) { 
@@ -37,43 +45,44 @@ public class PropertyService {
 		  } else return false;
 	}
 	
-		public List<Integer> getMonthlyProperty(String id, String year){
-		System.out.println(id);
-		System.out.println(year);
+	@Transactional(readOnly = true)
+	public List<Integer> getMonthlyProperty(String id, String year){
+	System.out.println(id);
+	System.out.println(year);
+	
+	List<Integer> totalProperty = new ArrayList<Integer>();
+	
+	for(int i=1;i<=12;i++) {
 		
-		List<Integer> totalProperty = new ArrayList<Integer>();
-		
-		for(int i=1;i<=12;i++) {
+		if(i<10) {
 			
-			if(i<10) {
-				
-				Property property = new Property();
-				property.setId(id);
-				property.setRegdate(year+"0"+String.valueOf(i));
+			Property property = new Property();
+			property.setId(id);
+			property.setRegdate(year+"0"+String.valueOf(i));
 
-				String total = propertydao.getColumnProperty(property);
-				
-				if(total!=null)
-					totalProperty.add(Integer.valueOf(total));
-				else
-					totalProperty.add(0);
-			}
-			else {
-				Property property = new Property();
-				property.setId(id);
-				property.setRegdate(year+String.valueOf(i));
-
-				String total = propertydao.getColumnProperty(property);
-				
-				if(total!=null)
-					totalProperty.add(Integer.valueOf(total));
-				else
-					totalProperty.add(0);
+			String total = propertydao.getColumnProperty(property);
 			
-			}
+			if(total!=null)
+				totalProperty.add(Integer.valueOf(total));
+			else
+				totalProperty.add(0);
 		}
+		else {
+			Property property = new Property();
+			property.setId(id);
+			property.setRegdate(year+String.valueOf(i));
+
+			String total = propertydao.getColumnProperty(property);
+			
+			if(total!=null)
+				totalProperty.add(Integer.valueOf(total));
+			else
+				totalProperty.add(0);
 		
-		return totalProperty;
+		}
+	}
+	
+	return totalProperty;
 	}
 	
 }

@@ -2,13 +2,18 @@ package com.ob.controller;
 
 
 import java.util.List;
+import java.util.Random;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ob.dto.Board;
+import com.ob.dto.Comments;
 import com.ob.dto.Property;
 import com.ob.dto.User;
 import com.ob.service.BoardService;
+import com.ob.service.CommentService;
 import com.ob.service.PropertyService;
 import com.ob.service.TotalPropertyService;
 import com.ob.service.UserService;
@@ -39,6 +46,12 @@ public class ObAssetController {
 
    @Autowired
    BoardService boardService;
+   
+   @Autowired
+   CommentService commentService;
+   
+	@Autowired
+    private JavaMailSender mailSender;
    
    @RequestMapping("/register")
 	public String register(HttpSession session, ModelMap model) {
@@ -70,6 +83,8 @@ public class ObAssetController {
 		
 		// 로그인 세션이 없는 경우
 		if(user!=null && !(user.getId()==null)){
+		   System.out.println(user);
+
 			userService.signUp(user);
 			boolean success = totalPropertyService.addTotalProperty(user);
 			
@@ -96,6 +111,39 @@ public class ObAssetController {
          return "login";
       }
    }
+   
+   @RequestMapping("/findId")
+   public String findId(HttpSession session, ModelMap model) {
+// session.removeAttribute("loginOK");
+      String id = (String)session.getAttribute("loginOK");
+         
+      // 로그인 세션이 있는 경우(내부이동)
+      if(id!=null && !id.equals("")) {
+    	  User user = userService.getUser(id);
+          totalPropertyService.setBarChartData(model, user.getGeneration(), user.getId(), year);
+          return "index";
+      }
+      else {
+         return "findid";
+      }
+   }
+   
+   @RequestMapping("/findPassword")
+   public String findPassword(HttpSession session, ModelMap model) {
+// session.removeAttribute("loginOK");
+      String id = (String)session.getAttribute("loginOK");
+         
+      // 로그인 세션이 있는 경우(내부이동)
+      if(id!=null && !id.equals("")) {
+    	  User user = userService.getUser(id);
+          totalPropertyService.setBarChartData(model, user.getGeneration(), user.getId(), year);
+          return "index";
+      }
+      else {
+         return "findpassword";
+      }
+   }
+   
 
    @RequestMapping("/index")
 	public String index(HttpSession session, ModelMap model) {
@@ -116,7 +164,7 @@ public class ObAssetController {
    @RequestMapping("/loginCheck")
       public String loginCheck(User user, HttpSession session, ModelMap model) {
        
-      String id = (String)session.getAttribute("loginOK");
+	   String id = (String)session.getAttribute("loginOK");
          
          // 로그인 세션이 있는 경우(내부이동)
          if(id!=null && !id.equals("")) {
@@ -291,8 +339,10 @@ public class ObAssetController {
 			board.setSeq(seq);
 			board.setId(auth);
 			board = boardService.getBoard(board);
+
 			board.setCnt(board.getCnt()+1);
 			boardService.updateBoard(board);
+			
 			model.addAttribute("board",board);
 			return "board/content";			
 		}
@@ -345,7 +395,6 @@ public class ObAssetController {
 		
 		// 로그인 세션이 있는 경우
 		if(id!=null && !id.equals("")) {
-			System.out.println(board);
 			boardService.updateBoard(board);
 			return "redirect:/board";			
 		}
@@ -392,12 +441,217 @@ public class ObAssetController {
 		
 	}
 	
-	// 아이디 중복체크 
-	@RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
+	// 댓글 리스트 가져오기 
+	@RequestMapping(value = "/comment/get", method = RequestMethod.GET)
 	@ResponseBody
-	public int idCheck(@RequestParam("id") String id) {
+	public List<Comments> get(@RequestParam("seq") int seq) {
 
-		return userService.userIdCheck(id);
+		Comments comments = new Comments();
+		comments.setSeq(seq);
+		
+		List<Comments> list = commentService.getComments(comments);
+		return list;
 	}
+	
+	// 댓글 추가하기
+	@RequestMapping(value = "/comment/insert", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean insert(@ModelAttribute Comments comments, HttpSession session) {
+		
+		String id = (String)session.getAttribute("loginOK");
+
+		// 로그인 세션이 있는 경우
+		if(id!=null && !id.equals("")) {
+			
+			commentService.addComment(comments);
+			
+			return true;
+		}
+		// 로그인 세션이 없는 경우
+		else 
+			return false;
+	}
+	
+	// 댓글 삭제하기
+		@RequestMapping(value = "/comment/delete", method = RequestMethod.POST)
+		@ResponseBody
+		public boolean delete(@ModelAttribute Comments comments, HttpSession session) {
+			
+			String id = (String)session.getAttribute("loginOK");
+
+			// 로그인 세션이 있는 경우
+			if(id!=null && !id.equals("")) {
+				
+				commentService.deleteComment(comments);
+				return true;
+			}
+			// 로그인 세션이 없는 경우
+			else 
+				return false;
+		}
+		
+		// 댓글 삭제하기
+		@RequestMapping(value = "/confirm/send", method = RequestMethod.GET)
+		@ResponseBody
+		public int send(@RequestParam("email") String email) {
+	
+			Random rand = new Random();
+			int randCode = rand.nextInt(888888) +111111;
+			
+			 /* 이메일 보내기 */
+	        String setFrom = "aiesec.cuk2021@gmail.com";
+	        String toMail = email;
+	        String title = "회원가입 인증 이메일 입니다.";
+	        String content = 
+	                "ObAsset 회원가입 인증메일입니다." +
+	                "<br><br>" + 
+	                "인증 번호는 \' " + randCode + "\' 입니다.<br>" + 
+	                "<br>" + 
+	                "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+	        
+	        try {
+	            
+	            MimeMessage message = mailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+	            helper.setFrom(setFrom);
+	            helper.setTo(toMail);
+	            helper.setSubject(title);
+	            helper.setText(content,true);
+	            mailSender.send(message);
+	           
+	            
+	        }catch(Exception e) {
+	            e.printStackTrace();
+	            
+	            return -1;
+	        }
+			
+			return randCode;
+			
+		}
+		
+		// 아이디 중복체크 
+		@RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
+		@ResponseBody
+		public int idCheck(@RequestParam("id") String id) {
+
+			return userService.userIdCheck(id);
+		}
+		
+		// 아이디 찾기
+		@RequestMapping(value = "/find/id", method = RequestMethod.GET)
+		@ResponseBody
+		public int findLostedId(@RequestParam("email") String email) {
+			
+			User user = new User();
+			user.setEmail(email);
+			List<User> lostedId = userService.findId(user);
+			
+			if(lostedId ==null || lostedId.size() == 0 )
+				return 1;
+			
+			StringBuilder stringBuilder = new StringBuilder();
+			
+			for(User id : lostedId) {
+				
+				stringBuilder.append(id.getId());
+				stringBuilder.append("<br>");
+			}
+			
+			 /* 이메일 보내기 */
+	        String setFrom = "aiesec.cuk2021@gmail.com";
+	        String toMail = email;
+	        String title = "ObAsset 아이디 찾기 입니다.";
+	        String content = 
+	                "ObAsset 아이디 조회 목록입니다." +
+	                "<br><br>" + 
+	                stringBuilder.toString() + 
+	                "<br>" + 
+	                "해당 아이디로 로그인해주세요.";
+	        
+	        try {
+	            
+	            MimeMessage message = mailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+	            helper.setFrom(setFrom);
+	            helper.setTo(toMail);
+	            helper.setSubject(title);
+	            helper.setText(content,true);
+	            mailSender.send(message);
+	           
+	            
+	        }catch(Exception e) {
+	            e.printStackTrace();
+	            return 2;
+	        }
+	        
+	        return 0;
+		}
+
+		// 비밀번호 찾기
+		@RequestMapping(value = "/find/password", method = RequestMethod.GET)
+		@ResponseBody
+		public int findLostedPassword(@RequestParam("id") String id, @RequestParam("email") String email) {
+			
+			User user = new User();
+			user.setId(id);
+			user.setEmail(email);
+			User lostedPassword = userService.findPassword(user);
+	
+			if(lostedPassword ==null || lostedPassword.getId() == null || lostedPassword.getId().equals(""))
+				return 1;
+			
+			 /* 이메일 보내기 */
+	        String setFrom = "aiesec.cuk2021@gmail.com";
+	        String toMail = email;
+	        String title = "ObAsset 비밀번호 찾기입니다.";
+	        String content = 
+	                "ObAsset 비밀번호 조회 결과입니다." +
+	                "<br><br>" + 
+	                "ID : " +lostedPassword.getId()+"<br>"+
+	                "Password : "+lostedPassword.getPassword()+
+	                "<br><br>" + 
+	                "해당 계정으로 로그인해주세요.";
+	        
+	        try {
+	            
+	            MimeMessage message = mailSender.createMimeMessage();
+	            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+	            helper.setFrom(setFrom);
+	            helper.setTo(toMail);
+	            helper.setSubject(title);
+	            helper.setText(content,true);
+	            mailSender.send(message);
+	           
+	            
+	        }catch(Exception e) {
+	            e.printStackTrace();
+	            return 2;
+	        }
+	        
+	        return 0;
+		}
+		
+		// 비밀번호 찾기
+		@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
+		@ResponseBody
+		public int withdraw(@RequestParam("id") String id, @RequestParam("password") String password, HttpSession session) {
+			
+			User user = new User();
+			user.setId(id);
+			User withdrawUser = userService.getUser(user.getId());
+	
+			if(withdrawUser ==null || withdrawUser.getId() == null || withdrawUser.getId().equals(""))
+				return 2;
+			
+			if(!withdrawUser.getPassword().equals(password)) {
+				
+				return 1;
+			}
+			userService.deleteUser(withdrawUser);
+			session.removeAttribute("loginResult");			
+			session.removeAttribute("loginOK");			
+			return 0;
+		}
 
 }
