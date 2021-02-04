@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ob.dao.PropertyDAO">
+
+	<select id="getProperties" resultType="com.ob.dto.Property">
+		select * from property where id = #{id}
+	</select>
+	<select id="getProperty" resultType="com.ob.dto.Property" parameterType="com.ob.dto.Property">
+		select * from property where id = #{id} and regdate = #{regdate}
+	</select>
+	<insert id="addProperty" parameterType="com.ob.dto.Property">
+		insert into property(id, stock, deposit, house, fund, bond, gold, regdate) values (#{id}, #{stock}, #{deposit}, #{house}, #{fund}, #{bond}, #{gold}, #{regdate})
+	</insert>
+	<update id="updateProperty" parameterType="com.ob.dto.Property">
+		update property set stock = #{stock}, deposit = #{deposit}, house = #{house}, fund = #{fund},  bond = #{bond},  gold = #{gold} where id=#{id} and regdate = #{regdate} 
+	</update>
+	
+	<!-- 모든 자산 컬럼 합 -->
+	<select id="getColumnProperty" resultType="String" parameterType="com.ob.dto.Property">
+		select to_char(sum(stock+deposit+house+fund+gold+bond)) from property where id = #{id} and regdate = #{regdate}
+	</select>
+	
+</mapper>
+
+

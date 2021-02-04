@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,11 +28,15 @@ import com.ob.service.CommentService;
 import com.ob.service.PropertyService;
 import com.ob.service.TotalPropertyService;
 import com.ob.service.UserService;
+import com.ob.util.AES256Util;
 
 @Controller
 @RequestMapping
-public class ObAssetController {
-   String year = "2021";
+public class ObAssetController{
+	
+	String key = "multicampusfighting";
+	AES256Util aes256;
+	String year = "2021";
 	
    @Autowired
    private UserService userService;
@@ -52,6 +55,11 @@ public class ObAssetController {
    
 	@Autowired
     private JavaMailSender mailSender;
+	
+	public ObAssetController() throws Exception {
+		
+		aes256 = new AES256Util(key);
+	}
    
    @RequestMapping("/register")
 	public String register(HttpSession session, ModelMap model) {
@@ -70,7 +78,7 @@ public class ObAssetController {
 	}
 
    @RequestMapping("/userRegister")
-	public String userRegister(User user, HttpSession session, ModelMap model) {
+	public String userRegister(User user, HttpSession session, ModelMap model) throws Exception{
 		
 		String id = (String)session.getAttribute("loginOK");
 		
@@ -83,7 +91,8 @@ public class ObAssetController {
 		
 		// 로그인 세션이 없는 경우
 		if(user!=null && !(user.getId()==null)){
-		   System.out.println(user);
+			
+			user.setPassword(aes256.aesEncode(user.getPassword()));
 
 			userService.signUp(user);
 			boolean success = totalPropertyService.addTotalProperty(user);
@@ -162,7 +171,7 @@ public class ObAssetController {
 	}
    
    @RequestMapping("/loginCheck")
-      public String loginCheck(User user, HttpSession session, ModelMap model) {
+      public String loginCheck(User user, HttpSession session, ModelMap model) throws Exception {
        
 	   String id = (String)session.getAttribute("loginOK");
          
@@ -175,6 +184,9 @@ public class ObAssetController {
       
          if(user!=null && !(user.getId()==null)){ 
         	// 여기부터 로그인 세션 없는 경우
+        	 
+     		user.setPassword(aes256.aesEncode(user.getPassword()));
+
              boolean loginUser = userService.signIn(user);
              
              //ID,password 미입력 or 잘못 입력시 로그인 페이지로 다시 이동
@@ -490,7 +502,7 @@ public class ObAssetController {
 				return false;
 		}
 		
-		// 댓글 삭제하기
+		// 회원 가입 인증 코드 전송
 		@RequestMapping(value = "/confirm/send", method = RequestMethod.GET)
 		@ResponseBody
 		public int send(@RequestParam("email") String email) {
@@ -591,7 +603,7 @@ public class ObAssetController {
 		// 비밀번호 찾기
 		@RequestMapping(value = "/find/password", method = RequestMethod.GET)
 		@ResponseBody
-		public int findLostedPassword(@RequestParam("id") String id, @RequestParam("email") String email) {
+		public int findLostedPassword(@RequestParam("id") String id, @RequestParam("email") String email) throws Exception{
 			
 			User user = new User();
 			user.setId(id);
@@ -600,6 +612,8 @@ public class ObAssetController {
 	
 			if(lostedPassword ==null || lostedPassword.getId() == null || lostedPassword.getId().equals(""))
 				return 1;
+			
+			lostedPassword.setPassword(aes256.aesDecode(lostedPassword.getPassword()));
 			
 			 /* 이메일 보내기 */
 	        String setFrom = "aiesec.cuk2021@gmail.com";
@@ -632,10 +646,10 @@ public class ObAssetController {
 	        return 0;
 		}
 		
-		// 비밀번호 찾기
+		// 회원탈퇴
 		@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
 		@ResponseBody
-		public int withdraw(@RequestParam("id") String id, @RequestParam("password") String password, HttpSession session) {
+		public int withdraw(@RequestParam("id") String id, @RequestParam("password") String password, HttpSession session) throws Exception{
 			
 			User user = new User();
 			user.setId(id);
@@ -644,12 +658,13 @@ public class ObAssetController {
 			if(withdrawUser ==null || withdrawUser.getId() == null || withdrawUser.getId().equals(""))
 				return 2;
 			
-			if(!withdrawUser.getPassword().equals(password)) {
+			if(!withdrawUser.getPassword().equals(aes256.aesEncode(password))) {
 				
 				return 1;
 			}
 			userService.deleteUser(withdrawUser);
-			session.removeAttribute("loginResult");			
+
+			session.setAttribute("loginResult", "");
 			session.removeAttribute("loginOK");			
 			return 0;
 		}

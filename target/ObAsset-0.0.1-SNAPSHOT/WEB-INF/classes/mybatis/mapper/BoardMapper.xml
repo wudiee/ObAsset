@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ob.dao.BoardDAO">
+
+	<select id="getBoards" resultType="com.ob.dto.Board">
+		select * from boards order by regdate
+	</select>
+	<select id="getBoard" resultType="com.ob.dto.Board" parameterType="com.ob.dto.Board">
+		select TO_CHAR(regdate, 'YY-MM-DD') as regdate, id, seq, title, content, cnt from boards where id = #{id} and seq = #{seq}
+	</select>
+	<insert id="addBoard" parameterType="com.ob.dto.Board">
+		insert into boards(seq, id, title, content, regdate) values(boardseq.nextval, #{id}, #{title},
+		#{content}, sysdate)
+	</insert>
+	<delete id="deleteBoard" parameterType="com.ob.dto.Board">
+		delete boards where id = #{id} and seq = #{seq}
+	</delete>
+	<update id="updateBoard" parameterType="com.ob.dto.Board">
+		update boards set title = #{title}, content = #{content}, cnt = #{cnt} where seq = ${seq}
+	</update>
+</mapper>
