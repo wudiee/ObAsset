@@ -26,7 +26,7 @@ public class ApplicationConfig {
 	public DataSource dataSource() { // connection pool 역할?? 
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriverClass(oracle.jdbc.driver.OracleDriver.class);
-		dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
+		dataSource.setUrl("jdbc:oracle:thin:@172.30.1.27:1521:xe");
 		dataSource.setUsername("scott");
 		dataSource.setPassword("TIGER");
 		return dataSource;
@@ -49,8 +49,8 @@ public class ApplicationConfig {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.gmail.com");
 		mailSender.setPort(587);
-		mailSender.setUsername("janice10508@gmail.com");
-		mailSender.setPassword("janice1004");
+		mailSender.setUsername("useremail");
+		mailSender.setPassword("password");
 		mailSender.setDefaultEncoding("utf-8");
 		mailSender.setJavaMailProperties(properties);
 		

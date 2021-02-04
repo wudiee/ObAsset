@@ -1,7 +1,9 @@
 package com.ob.service;
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import org.apache.commons.codec.net.URLCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ob.dao.TotalPropertyDAO;
 import com.ob.dao.UserDAO;
 import com.ob.dto.User;
+import com.ob.util.AES256Util;
 
 @Service
 public class UserService {
+
 	@Autowired
 	private UserDAO userDao;
 	
@@ -32,7 +36,8 @@ public class UserService {
 	
 	//회원가입
 	@Transactional(readOnly = false)
-	public void signUp(User user) {
+	public void signUp(User user){
+		
 		userDao.addUser(user);
 	}
 	
@@ -92,4 +97,5 @@ public class UserService {
 	}
 	
 }
+
 

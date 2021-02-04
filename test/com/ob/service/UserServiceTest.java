@@ -22,7 +22,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void signUp() {
+	public void signUp(){
 		User user = new  User();
 		user.setId("two");
 		user.setPassword("1234");
