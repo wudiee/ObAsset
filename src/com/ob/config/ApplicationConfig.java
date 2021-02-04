@@ -26,7 +26,7 @@ public class ApplicationConfig {
 	public DataSource dataSource() { // connection pool 역할?? 
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriverClass(oracle.jdbc.driver.OracleDriver.class);
-		dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
+		dataSource.setUrl("jdbc:oracle:thin:@172.30.1.27:1521:xe");
 		dataSource.setUsername("scott");
 		dataSource.setPassword("TIGER");
 		return dataSource;
